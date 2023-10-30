@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+  template-shop-mysql:
+    container_name: template-shop-mysql
+    image: template-shop/mysql
+    restart: always
+    build:
+      context: ./mysql/
+      dockerfile: ./mysql.Dockerfile
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: SNWeofpheYpKtlNAzfhoqACQiFYkqJRl
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbpassword
+      MYSQL_DATABASE: template-shop
+    ports:
+      - "3306:3306"
+  template-shop-server:
+    container_name: template-shop-server
+    image: template-shop/server
+    restart: always
+    build: 
+        context: ./springboot/
+        dockerfile: ./springboot.Dockerfile
+    ports:
+      - "8083:8082"
+  template-shop-nginx:
+   container_name: template-shop-nginx
+   image: template-shop/nginx
+   restart: always
+   build:
+     context: ./nginx/
+     dockerfile: nginx.Dockerfile
+   ports:
+     - "19999:80"
